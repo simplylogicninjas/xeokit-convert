@@ -448,6 +448,7 @@ class XKTModel {
 
         const geometryId = params.geometryId;
         const primitiveType = params.primitiveType;
+
         const positions = new Float64Array(params.positions); // May modify in #finalize
 
         const xktGeometryCfg = {
@@ -622,7 +623,7 @@ class XKTModel {
         }
 
         if (params.meshIds.length === 0) {
-            console.warn("XKTEntity has no meshes - won't create: " + params.entityId);
+            // console.warn("XKTEntity has no meshes - won't create: " + params.entityId);
             return;
         }
 

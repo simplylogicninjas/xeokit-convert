@@ -8,6 +8,9 @@
   "scripts": {
     "build-tests": "rollup --config rollup.config.tests.js",
     "build": "rollup --config rollup.config.pako.js; rollup --config rollup.config.dist.js; rollup --config rollup.config.convert2xkt.js; rollup --config rollup.config.tests.js",
+    "build:pako": "rollup --config rollup.config.pako.js",
+    "build:dist": "rollup --config rollup.config.dist.js",
+    "build:convert2xkt": "rollup --config rollup.config.convert2xkt.js",
     "test": "node ./perfTests/perfTests.js; percy exec -- node ./visualTests/visualTests.js",
     "perf-tests": "rollup --config rollup.config.pako.js; rollup --config rollup.config.dist.js; rollup --config rollup.config.convert2xkt.js; rollup --config rollup.config.tests.js; node ./perfTests/perfTests.js",
     "visual-tests": "percy exec -- node ./visualTests/visualTests.js",
@@ -38,6 +41,7 @@
   },
   "homepage": "https://github.com/xeokit/xeokit-convert#readme",
   "dependencies": {
+    "@gltf-transform/core": "^2.0.5",
     "@loaders.gl/core": "^3.0.13",
     "@loaders.gl/json": "^3.0.13",
     "@loaders.gl/las": "^3.0.13",
@@ -51,7 +55,7 @@
     "jszip-sync": "^3.2.1-sync",
     "path": "^0.12.7",
     "request": "^2.79.0",
-    "web-ifc": "0.0.29",
+    "web-ifc": "^0.0.34",
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
@@ -69,8 +73,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-minify-es": "^1.1.1",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "puppeteer-firefox": "^0.5.1"
+    "rollup-plugin-node-resolve": "^5.2.0"
   },
   "files": [
     "/dist",

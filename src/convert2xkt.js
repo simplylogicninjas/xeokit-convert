@@ -1,3 +1,4 @@
+import { Document, Scene, NodeIO } from '@gltf-transform/core';
 import {parseMetaModelIntoXKTModel} from "./parsers/parseMetaModelIntoXKTModel.js";
 import {parseCityJSONIntoXKTModel} from "./parsers/parseCityJSONIntoXKTModel.js";
 import {parseGLTFIntoXKTModel} from "./parsers/parseGLTFIntoXKTModel.js";
@@ -12,7 +13,31 @@ import {XKTModel} from "./XKTModel/XKTModel.js";
 import {XKT_INFO} from "./XKT_INFO.js";
 
 const fs = require('fs');
+const process = require('process');
 const DOMParser = require('xmldom').DOMParser;
+
+
+async function parseGltfJSON(source) {
+    const nodeIO = new NodeIO();
+
+    const document = await nodeIO.read(source);
+    
+    if (document) {
+        const jsonDocument = await nodeIO.writeJSON(document);
+        const resourceKeys = Object.keys(jsonDocument.resources);
+
+        for (const resourceKey of resourceKeys) {
+            for (const buffer of jsonDocument.json.buffers) {
+                if (buffer.uri === resourceKey) {
+                    buffer._arrayBuffer = jsonDocument.resources[resourceKey];
+                    jsonDocument.resources[resourceKey] = null;
+                }
+            }
+        }
+
+        return jsonDocument;
+    }
+} 
 
 /**
  * Converts model files into xeokit's native XKT format.
@@ -327,7 +352,13 @@ function convert2xkt({
 }
 
 function getBasePath(src) {
-    const i = src.lastIndexOf("/");
+    const platform = process.platform;
+    const seperator = platform === 'win32' ? '\\' : '/';
+    
+    const i = src.lastIndexOf(seperator);
+
+    console.log('gltf attachment', i);
+
     return (i !== 0) ? src.substring(0, i + 1) : "";
 }
 
